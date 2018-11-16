@@ -32,10 +32,10 @@ class SignInVC: UIViewController {
             if passwordField.text! == repeatPasswordField.text! {
                 registerUser()
             } else {
-                ProgressHUD.show("Passwords do not match!")
+                ProgressHUD.showError("Passwords do not match!")
             }
         } else {
-            ProgressHUD.show("Email and Password are required!")
+            ProgressHUD.showError("Email and Password are required!")
         }
         
         
@@ -43,17 +43,27 @@ class SignInVC: UIViewController {
     
     
     @IBAction func logInBtnPressed(_ sender: Any) {
-        ProgressHUD.show("Login...")
+        dismissKeyboard()
+        if emailField.text != "" && passwordField.text != "" {
+            loginUser()
+        } else {
+            ProgressHUD.showError("Email and Password are required.")
+        }
+        
+       
+    }
+
+    
+    func loginUser(){
         Auth.auth().signIn(withEmail: emailField.text!, password: passwordField.text!) { (result, error) in
             if error != nil {
                 ProgressHUD.showError(error!.localizedDescription)
             } else {
-                ProgressHUD.dismiss()
+                
                 self.goToApp()
             }
         }
     }
-
     
     @IBAction func backgroundTap(_ sender: Any) {
         dismissKeyboard()

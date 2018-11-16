@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import ProgressHUD
+import SDWebImage
 
 
 
@@ -27,6 +28,7 @@ class UserTVC: UITableViewController {
     var allPhones = [String]()
     var findingCities = [String]()
     var findingCountries = [String]()
+    var findingCitiesAvatar = [String]()
     
     var currentUserCity = String()
     var currentUserCountry = String()
@@ -101,10 +103,13 @@ class UserTVC: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! UserCell
         if filterSegmentControl.selectedSegmentIndex == 0 {
              cell.fullnameLabel.text = findingCities[indexPath.row]
+            cell.avatarImage.sd_setImage(with: URL(string: allAvatars[indexPath.row]), completed: nil)
         } else if filterSegmentControl.selectedSegmentIndex == 1 {
             cell.fullnameLabel.text = findingCountries[indexPath.row]
+            cell.avatarImage.sd_setImage(with: URL(string: allAvatars[indexPath.row]), completed: nil)
         } else if filterSegmentControl.selectedSegmentIndex == 2 {
              cell.fullnameLabel.text = allObjects[indexPath.row]
+            cell.avatarImage.sd_setImage(with: URL(string: allAvatars[indexPath.row]), completed: nil)
         }
       
         return cell
@@ -151,7 +156,7 @@ class UserTVC: UITableViewController {
                             if let findCity = userDic["city"]{
                                 if self.currentUserCity == findCity as! String {
                                     if self.currentUserFullname != userDic["fullname"] as! String{
-                                        self.findingCities.append(findCity as! String)
+                                        self.findingCities.append(userDic["fullname"] as! String)
                                         print("Users as same as current User's City: \(self.findingCities)")
                                     }
                                 }
